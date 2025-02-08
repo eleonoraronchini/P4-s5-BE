@@ -53,4 +53,8 @@ public class EdificioService {
         db.delete(e);
         System.out.println("Edificio eliminato dal DB!");
     }
+
+    public Edificio getByName(String name){
+        return db.findByName(name);
+    }
 }

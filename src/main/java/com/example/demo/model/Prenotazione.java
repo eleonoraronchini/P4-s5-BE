@@ -15,9 +15,9 @@ public class Prenotazione {
     @Id
     @GeneratedValue
     private Long id;
-    @OneToOne (cascade = CascadeType.ALL)
+    @OneToOne (cascade = CascadeType.MERGE)
     private Postazione postazione;
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne (cascade = CascadeType.MERGE)
     @JoinColumn(name = "utente_id")
     private Utente utente;
     private LocalDateTime dataDiScadenza;

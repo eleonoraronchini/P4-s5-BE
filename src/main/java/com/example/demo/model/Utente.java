@@ -17,18 +17,18 @@ public class Utente {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String userName;
     @Column(nullable = false)
-    private String birthName;
-    @Column(nullable = false, unique = true)
+    private String name;
+    @Column(nullable = false)
     private String email;
     @OneToMany(mappedBy = "utente")
     private List<Prenotazione> prenotazioni;
 
     public Utente(String userName, String birthName, String email){
         this.userName = userName;
-        this.birthName = birthName;
+        this.name = birthName;
         this.email = email;
 
     }

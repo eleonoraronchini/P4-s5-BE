@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class Runner implements CommandLineRunner {
     @Autowired EdificioService edificioService;
+    @Autowired UtenteService utenteService;
     @Autowired PostazioneService postazioneService;
     @Autowired PrenotazioneService prenotazioneService;
-    @Autowired UtenteService utenteService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -33,17 +33,6 @@ public class Runner implements CommandLineRunner {
         Utente u3 = utenteService.createUtente3();
         Utente u4 = utenteService.createUtente4();
 
-        Postazione p1 = postazioneService.createPostazione1();
-        Postazione p2 = postazioneService.createPostazione2();
-        Postazione p3 = postazioneService.createPostazione3();
-        Postazione p4 = postazioneService.createPostazione4();
-        Postazione p5 = postazioneService.createPostazione5();
-        Postazione p6 = postazioneService.createPostazione6();
-        Postazione p7 = postazioneService.createPostazione7();
-
-        Prenotazione pren1 = prenotazioneService.createPrenotazione1();
-        Prenotazione pren2 = prenotazioneService.createPrenotazione2();
-        Prenotazione pren3 = prenotazioneService.createPrenotazione3();
 
        /* edificioService.insertEdificio(e1);
         edificioService.insertEdificio(e2);
@@ -53,19 +42,42 @@ public class Runner implements CommandLineRunner {
         utenteService.insertUtente(u1);
         utenteService.insertUtente(u2);
         utenteService.insertUtente(u3);
-        utenteService.insertUtente(u4);
+        utenteService.insertUtente(u4);*/
 
-        postazioneService.insertPostazione(p1);
-        postazioneService.insertPostazione(p2);
-        postazioneService.insertPostazione(p3);
-        postazioneService.insertPostazione(p4);
-        postazioneService.insertPostazione(p5);
-        postazioneService.insertPostazione(p6);
-        postazioneService.insertPostazione(p7); */
 
-        prenotazioneService.insertPrenotazione(pren1);
-       /* prenotazioneService.insertPrenotazione(pren2);
-        prenotazioneService.insertPrenotazione(pren3);*/
+        Postazione p1 = postazioneService.createPostazione1();
+       // postazioneService.insertPostazione(p1);
+        Postazione p2 = postazioneService.createPostazione2();
+       // postazioneService.insertPostazione(p2);
+
+        Postazione p3 = postazioneService.createPostazione3();
+       // postazioneService.insertPostazione(p3);
+
+        Postazione p4 = postazioneService.createPostazione4();
+       // postazioneService.insertPostazione(p4);
+
+        Postazione p5 = postazioneService.createPostazione5();
+      //  postazioneService.insertPostazione(p5);
+
+        Postazione p6 = postazioneService.createPostazione6();
+       // postazioneService.insertPostazione(p6);
+
+        Postazione p7 = postazioneService.createPostazione7();
+        // postazioneService.insertPostazione(p7);
+
+
+        Prenotazione pren1 = prenotazioneService.createPrenotazione1();
+       // prenotazioneService.insertPrenotazione(p1);
+
+        Prenotazione pren2 = prenotazioneService.createPrenotazione2();
+       // prenotazioneService.insertPrenotazione(p2);
+
+        Prenotazione pren3 = prenotazioneService.createPrenotazione3();
+       // prenotazioneService.insertPrenotazione(p3);
+
+        prenotazioneService.prenotaPostazione(p5,u3,"Prova");
+
+
 
 
     }

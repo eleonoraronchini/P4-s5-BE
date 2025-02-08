@@ -2,17 +2,22 @@ package com.example.demo.service;
 
 import com.example.demo.model.Postazione;
 import com.example.demo.model.Prenotazione;
+import com.example.demo.model.Utente;
+import com.example.demo.repository.PostazioneDAORepository;
 import com.example.demo.repository.PrenotazioneDAORepository;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class PrenotazioneService {
-
     @Autowired
     PrenotazioneDAORepository db;
+    @Autowired
+    PostazioneDAORepository dbPostazione;
 
     @Autowired
     @Qualifier("pren1")
@@ -47,5 +52,25 @@ public class PrenotazioneService {
     public void deletePrenotazione (Prenotazione p){
         db.delete(p);
         System.out.println("Prenotazione eliminata dal DB!");
+    }
+    // Metodo per effettuare una prenotazione
+    public String prenotaPostazione(Postazione postazione, Utente utente, String descrizione) {
+
+        if (postazione.isLibera()) {
+            Prenotazione prenotazione = new Prenotazione(postazione, utente, descrizione);
+
+            prenotazione.setDataDiScadenza(LocalDateTime.now().plusHours(24));
+
+            db.save(prenotazione);
+
+            // Modifica lo stato della postazione in "non libera"
+            postazione.setLibera(false);
+            dbPostazione.save(postazione);
+            System.out.println("Prenotazione effettuata con successo!");
+            return"Prenotazione effettuata con successo!";
+        } else {
+            System.out.println("La postazione non è disponibile per la data richiesta.");
+            return "La postazione non è disponibile per la data richiesta.";
+        }
     }
 }

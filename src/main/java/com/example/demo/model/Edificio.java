@@ -22,7 +22,7 @@ public class Edificio {
     private String adress;
     @Column(nullable = false)
     private String city;
-    @OneToMany(mappedBy = "edificio", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "edificio", cascade = CascadeType.ALL)
     private List<Postazione> postazioniEdificio;
 
     public Edificio(String name, String adress, String city) {

@@ -6,6 +6,11 @@ import com.example.demo.model.Postazione;
 import com.example.demo.model.Prenotazione;
 import com.example.demo.model.Utente;
 import com.example.demo.model.enumerations.tipologiaPostazione;
+import com.example.demo.repository.EdificioDAORepository;
+import com.example.demo.repository.PostazioneDAORepository;
+import com.example.demo.repository.UtenteDAORepository;
+import com.example.demo.service.EdificioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -14,6 +19,9 @@ import org.springframework.context.annotation.Scope;
 @Configuration
 @PropertySource("application.properties")
 public class ConfigurationBean {
+    @Autowired EdificioDAORepository edificioDAORepository;
+    @Autowired PostazioneDAORepository postazioneDAORepository;
+    @Autowired UtenteDAORepository utenteDAORepository;
 
     //UTENTI
     @Bean
@@ -57,69 +65,104 @@ public class ConfigurationBean {
         return e;
     }
     @Bean
+    @Scope("prototype")
     public Edificio edificio4 (){
         Edificio e = new Edificio("Palazzo delle ginestre","viale dei Giardinieri, 9","Bologna");
         return e;
     }
 
 
+
     //POSTAZIONI
-
-    @Bean
+@Bean
     public Postazione p1 (){
-        Postazione p = new Postazione("sala 1", tipologiaPostazione.PRIVATO,3,edificio1(),true);
-        return p;
+    Edificio clinicaDentale = edificioDAORepository.findByName ("Clinica dentale igiene&salute");
+        if(clinicaDentale == null){
+            throw new RuntimeException("Edificio non trovato nel db");
+        }
+    Postazione p = new Postazione("sala rossa", tipologiaPostazione.PRIVATO, 3, clinicaDentale, false);
+    return p;
     }
-
     @Bean
     public Postazione p2 (){
-        Postazione p = new Postazione("sala dei giocolieri", tipologiaPostazione.OPENSPACE,30,edificio3(),true);
+        Edificio studioMedico = edificioDAORepository.findByName ("Studio medico comunale n.2");
+        if(studioMedico == null){
+            throw new RuntimeException("Edificio non trovato nel db");
+        }
+        Postazione p = new Postazione("ambulatorio 4", tipologiaPostazione.PRIVATO, 4, studioMedico, true);
         return p;
     }
+
     @Bean
     public Postazione p3 (){
-        Postazione p = new Postazione("sala rossa", tipologiaPostazione.SALA_RIUNIONI,20,edificio2(),true);
+        Edificio UfficioAia = edificioDAORepository.findByName ("Ufficio dell'aia");
+        if(UfficioAia == null){
+            throw new RuntimeException("Edificio non trovato nel db");
+        }
+        Postazione p = new Postazione("stanza delle ghirlande", tipologiaPostazione.OPENSPACE, 30, UfficioAia, true);
         return p;
     }
+
     @Bean
     public Postazione p4 (){
-        Postazione p = new Postazione("sala blue", tipologiaPostazione.PRIVATO,10,edificio2(),false);
+        Edificio palazzoGinestre = edificioDAORepository.findByName ("Palazzo delle ginestre");
+        if(palazzoGinestre == null){
+            throw new RuntimeException("Edificio non trovato nel db");
+        }
+        Postazione p = new Postazione("stanza dei carri", tipologiaPostazione.OPENSPACE, 40, palazzoGinestre, true);
         return p;
     }
     @Bean
     public Postazione p5 (){
-        Postazione p = new Postazione("sala dei tulipani", tipologiaPostazione.OPENSPACE,40,edificio4(),false);
+        Edificio palazzoGinestre = edificioDAORepository.findByName ("Palazzo delle ginestre");
+        if(palazzoGinestre == null){
+            throw new RuntimeException("Edificio non trovato nel db");
+        }
+        Postazione p = new Postazione("sala principale", tipologiaPostazione.SALA_RIUNIONI, 22, palazzoGinestre, false);
         return p;
     }
     @Bean
     public Postazione p6 (){
-        Postazione p = new Postazione("sala dei ciliegi", tipologiaPostazione.SALA_RIUNIONI,20,edificio4(),false);
+        Edificio UfficioAia = edificioDAORepository.findByName ("Ufficio dell'aia");
+        if(UfficioAia == null){
+            throw new RuntimeException("Edificio non trovato nel db");
+        }
+        Postazione p = new Postazione("stanza dei gelsi", tipologiaPostazione.PRIVATO, 10, UfficioAia, false);
         return p;
     }
     @Bean
     public Postazione p7 (){
-        Postazione p = new Postazione("sala 6", tipologiaPostazione.PRIVATO,6,edificio1(),true);
+        Edificio studioMedico = edificioDAORepository.findByName ("Studio medico comunale n.2");
+        if(studioMedico == null){
+            throw new RuntimeException("Edificio non trovato nel db");
+        }
+        Postazione p = new Postazione("ambulatorio 7", tipologiaPostazione.PRIVATO, 5, studioMedico, false);
         return p;
     }
 
     //PRENOTAZIONI
     @Bean
     public Prenotazione pren1 (){
-        Prenotazione p = new Prenotazione(p4(),utente2(),"visita oculistica");
+        Postazione p7 = postazioneDAORepository.findByName("ambulatorio 7");
+        Utente u2 = utenteDAORepository.findByName("Paolo Ronchini");
+        Prenotazione p = new Prenotazione(p7,u2,"visita oculistica");
         return p;
     }
 
     @Bean
     public Prenotazione pren2 (){
-        Prenotazione p = new Prenotazione(p6(),utente4(),"debrief aziendale");
+        Postazione p5 = postazioneDAORepository.findByName("sala principale");
+        Utente u3 = utenteDAORepository.findByName("Ilaria Vezzoli");
+        Prenotazione p = new Prenotazione(p5,u3,"debrief aziendale");
         return p;
     }
 
     @Bean
     public Prenotazione pren3 (){
-        Prenotazione p = new Prenotazione(p5(),utente1(),"incontro amministrativo");
+        Postazione p4 = postazioneDAORepository.findByName("stanza dei gelsi");
+        Utente u4 = utenteDAORepository.findByName("Alberto Fraternali");
+        Prenotazione p = new Prenotazione(p4,u4,"incontro amministrativo");
         return p;
     }
-
 
 }
